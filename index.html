@@ -135,6 +135,7 @@ html,body{overflow-x:hidden}
       <div style="display:flex;flex-direction:column;gap:10px;">
         <h3 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;line-height:1.1;text-wrap:pretty;">{{ respuestaTitulo }}</h3>
         <p style="margin:0;font-size:17px;line-height:1.35;">{{ respuestaTexto }}</p>
+        <a href="{{ waUrl }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 16px;background:#25D366;color:#0B3D1E;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;text-decoration:none;text-align:center;">Enviar confirmación por WhatsApp</a>
         <button onClick="{{ cambiar }}" style="align-self:flex-start;min-height:44px;padding:8px 16px;background:transparent;color:#141B33;border:2px solid #141B33;border-radius:999px;font-family:'Shantell Sans',sans-serif;font-size:15px;cursor:pointer;">Cambiar respuesta</button>
       </div>
     </sc-if>
@@ -149,7 +150,7 @@ html,body{overflow-x:hidden}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;nombre&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Starling&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;edad&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:23,&quot;min&quot;:1,&quot;max&quot;:120,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;fecha&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2026-11-08&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;hora&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Hora por confirmar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;lugar&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Mi casa &quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;musica&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;./cancion.mp3&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Música&quot;},&quot;musicaAlAbrir&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Música&quot;},&quot;sobre&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Experiencia&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;nombre&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Starling&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;edad&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:23,&quot;min&quot;:1,&quot;max&quot;:120,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;fecha&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2026-11-08&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;hora&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Hora por confirmar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;lugar&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Av. Oscar R. Benavides 1075&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;51916824275&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Festejo&quot;},&quot;musica&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;./cancion.mp3&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Música&quot;},&quot;musicaAlAbrir&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Música&quot;},&quot;sobre&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Experiencia&quot;}}">
 class Component extends DCLogic {
   state = { fase: 0, invitado: '', respuesta: null, sonando: false, sinMusica: false, tx: 16, ty: 0, hx: -12, hy: -26 };
   onHouseTilt = (e) => {
@@ -219,6 +220,10 @@ class Component extends DCLogic {
       cambiar: () => this.setState({ respuesta: null }),
       respuestaTitulo: respuesta === 'si' ? `¡Listo${quien ? ', ' + quien : ''}! Ya estás en la lista.` : `¡Te vamos a extrañar${quien ? ', ' + quien : ''}!`,
       respuestaTexto: respuesta === 'si' ? `Ve calentando la voz para el "Feliz cumpleaños". ${nombre} cuenta contigo.` : `Le guardamos un pedazo de pastel a tu nombre (o lo intentaremos).`,
+      waUrl: 'https://wa.me/' + String(P.whatsapp ?? '51916824275').replace(/\D/g, '') + '?text=' + encodeURIComponent(
+        respuesta === 'si'
+          ? `¡Hola! Soy ${quien || 'un invitado'} y confirmo mi asistencia al cumpleaños de ${nombre} el ${ft.charAt(0).toUpperCase() + ft.slice(1)} 🎉`
+          : `¡Hola! Soy ${quien || 'un invitado'} y lamentablemente no podré asistir al cumpleaños de ${nombre}. ¡Les deseo una gran fiesta! 🎂`),
       abrir: this.abrir,
       showOverlay: (P.sobre ?? true) && fase < 5,
       overlayOpacity: fase >= 4 ? 0 : 1,
